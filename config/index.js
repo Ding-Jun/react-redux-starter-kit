@@ -3,7 +3,7 @@ const path = require('path')
 const debug = require('debug')('app:config')
 const argv = require('yargs').argv
 const ip = require('ip')
-
+console.log('yyyyyyyyyyy ip', ip.address())
 debug('Creating default configuration.')
 // ========================================================
 // Default Configuration
@@ -15,17 +15,36 @@ const config = {
   // Project Structure
   // ----------------------------------
   path_base  : path.resolve(__dirname, '..'),
-  dir_client : 'src',
+  dir_src    : 'src',
   dir_dist   : 'dist',
+  dir_public : 'dist/public',
   dir_server : 'server',
   dir_test   : 'tests',
+
+  // ----------------------------------
+  // Entry points
+  // ----------------------------------
+  entry_client: 'client.js',
+  entry_server: 'server.js',
+
+  // ----------------------------------
+  // App mount point config  我没用
+  // ----------------------------------
+  app_mount_point: {
+    id: 'root',
+    style: {height: '100%'}
+  },
 
   // ----------------------------------
   // Server Configuration
   // ----------------------------------
   server_host : ip.address(), // use string 'localhost' to prevent exposure on local network
   server_port : process.env.PORT || 3000,
-
+  universal     : {
+    enabled     : true,
+    output      : 'server.js',
+    client_info : 'client_info.json'
+  },
   // ----------------------------------
   // Compiler Configuration
   // ----------------------------------
@@ -111,8 +130,9 @@ function base () {
 
 config.utils_paths = {
   base   : base,
-  client : base.bind(null, config.dir_client),
-  dist   : base.bind(null, config.dir_dist)
+  src    : base.bind(null, config.dir_src),
+  dist   : base.bind(null, config.dir_dist),
+  public : base.bind(null, config.dir_public)
 }
 
 // ========================================================
