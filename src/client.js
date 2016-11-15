@@ -5,7 +5,8 @@ import { useRouterHistory, match } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
-import Helmet from 'react-helmet'
+import layout from '../config/layout'
+
 // ========================================================
 // Browser History Setup
 // ========================================================
@@ -58,7 +59,7 @@ let render = (routerKey = null) => {
         history={history}
         routes={routes}
         routerKey={routerKey}
-
+        layout={{...layout, ...(window.___LAYOUT__ || {})}}
       />,
       MOUNT_NODE
     )
@@ -79,7 +80,7 @@ if (__DEV__) {
     // Wrap render in try/catch
     render = () => {
       try {
-        renderApp()
+        renderApp(Math.random())
       } catch (error) {
         renderError(error)
       }

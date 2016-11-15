@@ -31,6 +31,7 @@ module.exports = function* (){
     // Catch the hash of the build in order to use it in the universal middleware
     config.universal && config.universal.enabled && compiler.plugin('done', stats => {
       // Create client info from the fresh build
+      let {hash, version, assetsByChunkName} = stats
       clientInfo = {
         assetsByChunkName: {
           app: `app.${stats.hash}.js`,
@@ -56,6 +57,7 @@ module.exports = function* (){
     // these files. This middleware doesn't need to be enabled outside
     // of development since this directory will be copied into ~/dist
     // when the application is compiled.
+    debug(`express use static folder:${paths.src('static')}`)
     app.use(express.static(paths.src('static')))
   } else {
     if (config.universal.enabled) {
@@ -82,6 +84,7 @@ module.exports = function* (){
     // Serving ~/dist by default. Ideally these files should be served by
     // the web server and not the app server, but this helps to demo the
     // server in production.
+    debug(`express use static folder:${paths.public()}`)
     app.use(express.static(paths.public()))
 
 

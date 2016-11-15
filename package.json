@@ -13,6 +13,7 @@
     "lint": "eslint bin build config server src tests",
     "lint:fix": "npm run lint -- --fix",
     "start": "better-npm-run start",
+    "start:prod": "better-npm-run start:prod",
     "dev": "better-npm-run dev",
     "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
@@ -59,6 +60,14 @@
       "command": "node bin/server",
       "env": {
         "DEBUG": "app:*"
+      }
+    },
+    "start:prod": {
+      "command": "node bin/server",
+      "env": {
+        "NODE_ENV": "production",
+        "DEBUG": "app:*",
+        "PORT": "3000"
       }
     },
     "test": {
@@ -138,6 +147,7 @@
     "eslint-plugin-standard": "^2.0.0",
     "express": "^4.14.0",
     "fs-extra": "^1.0.0",
+    "helmet-webpack-plugin": "^0.0.3",
     "karma": "^1.0.0",
     "karma-coverage": "^1.0.0",
     "karma-mocha": "^1.0.1",

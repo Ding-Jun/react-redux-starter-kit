@@ -1,10 +1,11 @@
 const webpack = require('webpack')
 const webpackConfig = require('./webpack.config')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HelmetWebpackPlugin = require('helmet-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const clone = require('clone')
 const config = require('../config')
 const debug = require('debug')('app:webpack:config')
+const layout = require('../config/layout')
 
 const paths = config.utils_paths
 const {__DEV__, __PROD__, __TEST__} = config.globals
@@ -57,7 +58,7 @@ webpackConfigClient.plugins = [
       }
     })
   },
-  new webpack.DefinePlugin(config.globals),
+  new webpack.DefinePlugin(config.globals)/*,
   new HtmlWebpackPlugin({
     template : paths.src('index.html'),
     hash     : false,
@@ -67,7 +68,7 @@ webpackConfigClient.plugins = [
     minify   : {
       collapseWhitespace : true
     }
-  })
+  })*/
 ]
 
 if (__DEV__) {
