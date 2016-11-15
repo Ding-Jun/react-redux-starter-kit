@@ -3,6 +3,7 @@ const webpackConfig = require('./webpack.config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const clone = require('clone')
+const config = require('../config')
 const debug = require('debug')('app:webpack:config')
 
 const paths = config.utils_paths
@@ -17,7 +18,7 @@ webpackConfigClient.target = 'web'
 // ------------------------------------
 // Entry Points
 // ------------------------------------
-const APP_ENTRY = paths.client('main.js')
+const APP_ENTRY = paths.src(config.entry_client)
 
 webpackConfigClient.entry = {
   app : __DEV__
