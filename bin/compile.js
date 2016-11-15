@@ -9,7 +9,7 @@ const config = require('../config')
 const paths = config.utils_paths
 const clientInfo = paths.dist(config.universal.client_info)
 
-const compile = function *() => {
+const compile = function *() {
   try {
     let stats
 

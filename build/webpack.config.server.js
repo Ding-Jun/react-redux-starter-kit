@@ -1,7 +1,7 @@
-import webpackConfig from './webpack.config'
-import clone from 'clone'
-import config from '../config'
-import fs from 'fs'
+const webpackConfig = require('./webpack.config')
+const clone = require('clone')
+const config = require('../config')
+const fs = require('fs')
 
 const debug = require('debug')('app:webpack:config')
 const paths = config.utils_paths
@@ -38,4 +38,4 @@ webpackConfigServer.output = {
   umdNamedDefine: true
 }
 
-export default webpackConfigServer
+module.exports = webpackConfigServer

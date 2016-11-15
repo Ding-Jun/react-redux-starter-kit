@@ -90,7 +90,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {
+export const initialState = {
   current: null,
   fetching: false,
   zens: [],

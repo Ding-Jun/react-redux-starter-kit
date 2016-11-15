@@ -7,11 +7,12 @@ import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import { syncHistoryWithStore } from 'react-router-redux'
 import createMemoryHistory from 'react-router/lib/createMemoryHistory'
 import createStore from './store/createStore'
+import PrettyError from 'pretty-error'
 import AppContainer from './containers/AppContainer'
 import _debug from 'debug'
-import { renderHtmlLayout } from 'helmet-webpack-plugin'
-import config from '../config'
-import router from '../server/router'
+//import { renderHtmlLayout } from 'helmet-webpack-plugin'
+//import config from '../config'
+//import router from '../server/router'
 import qs from 'qs'; // 添加到文件开头
 const debug = _debug('app:server:universal:render')
 
@@ -26,7 +27,7 @@ export default (getClientInfo) => {
     let initialState = { counter: counter }
 
     // 创建新的 Redux store 实例
-    const store = createStore(rootReducer,initialState);
+    const store = createStore(initialState,memoryHistory);
     const routes = require('./routes/index').default(store)
     const history = syncHistoryWithStore(memoryHistory, store, {
       selectLocationState: (state) => state.router
@@ -37,6 +38,13 @@ export default (getClientInfo) => {
       // ----------------------------------
       // Internal server error
       // ----------------------------------
+      const handleError = ({status, message, error = null, children = null}) => {
+        if (error) {
+          let pe = new PrettyError()
+          debug(pe.render(error))
+        }
+        res.status(500).send('Something broke!');
+      }
       if (err) {
         handleError({status: 500, message: 'Internal server error', error: err})
         return
@@ -63,7 +71,7 @@ export default (getClientInfo) => {
             history={history}
             routerKey={Math.random()}
             routes={routes}
-            store={store} />      
+            store={store} />
       )
       // 从 store 中获得初始 state
       const finalState = store.getState();
@@ -82,6 +90,7 @@ function renderFullPage(html, initialState,app,vendor) {
     <html>
       <head>
         <title>Redux Universal Example</title>
+        <link rel="stylesheet" href="bootstrap.min.css">
       </head>
       <body>
         <div id="root">${html}</div>

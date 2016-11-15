@@ -95,10 +95,10 @@ The application structure presented in this boilerplate is **fractal**, where fu
 │   └── webpack              # Environment-specific configuration files for webpack
 ├── config                   # Project configuration settings
 ├── server                   # Express application that provides webpack middleware
-│   └── main.js              # Server application entry point
+│   └── client.js              # Server application entry point
 ├── src                      # Application source code
 │   ├── index.html           # Main HTML page container for app
-│   ├── main.js              # Application bootstrap and rendering
+│   ├── client.js              # Application bootstrap and rendering
 │   ├── components           # Global Reusable Presentational Components
 │   ├── containers           # Global Reusable Container Components
 │   ├── layouts              # Components that dictate major page structure

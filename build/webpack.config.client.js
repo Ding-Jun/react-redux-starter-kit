@@ -59,9 +59,9 @@ webpackConfigClient.plugins = [
   },
   new webpack.DefinePlugin(config.globals),
   new HtmlWebpackPlugin({
-    template : paths.client('index.html'),
+    template : paths.src('index.html'),
     hash     : false,
-    favicon  : paths.client('static/favicon.ico'),
+    favicon  : paths.src('static/favicon.ico'),
     filename : 'index.html',
     inject   : 'body',
     minify   : {
@@ -124,4 +124,4 @@ if (!__DEV__) {
   )
 }
 
-export default webpackConfigClient
+module.exports = webpackConfigClient

@@ -7,7 +7,7 @@ const paths = config.utils_paths
 const {__DEV__} = config.globals
 const output = paths.dist(config.universal.output)
 
-export default  function* () {
+module.exports = function* () {
   debug('Enable universal middleware.')
 
   if (__DEV__) {

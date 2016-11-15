@@ -1,6 +1,5 @@
 const webpack = require('webpack')
 const cssnano = require('cssnano')
-
 const config = require('../config')
 const debug = require('debug')('app:webpack:config')
 
@@ -18,7 +17,12 @@ const webpackConfig = {
   }
 }
 
-
+// ------------------------------------
+// Plugins
+// ------------------------------------
+webpackConfig.plugins = [
+  new webpack.DefinePlugin(config.globals)
+]
 
 
 // ------------------------------------
@@ -55,7 +59,7 @@ webpackConfig.module.loaders.push({
   test    : /\.scss$/,
   exclude : null,
   loaders : [
-    'style',
+    'simple-universal-style',
     BASE_CSS_LOADER,
     'postcss',
     'sass?sourceMap'
@@ -65,7 +69,7 @@ webpackConfig.module.loaders.push({
   test    : /\.css$/,
   exclude : null,
   loaders : [
-    'style',
+    'simple-universal-style',
     BASE_CSS_LOADER,
     'postcss'
   ]

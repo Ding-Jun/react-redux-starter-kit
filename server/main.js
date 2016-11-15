@@ -56,7 +56,7 @@ module.exports = function* (){
     // these files. This middleware doesn't need to be enabled outside
     // of development since this directory will be copied into ~/dist
     // when the application is compiled.
-    app.use(express.static(paths.client('static')))
+    app.use(express.static(paths.src('static')))
   } else {
     if (config.universal.enabled) {
       // Get assets from client_info.json
@@ -83,7 +83,7 @@ module.exports = function* (){
     // the web server and not the app server, but this helps to demo the
     // server in production.
     app.use(express.static(paths.public()))
-    
+
 
   }
   //服务器端编译
