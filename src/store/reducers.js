@@ -5,6 +5,7 @@ import { routerReducer as router } from 'react-router-redux'
 // Fix: "React-Redux: Combining reducers: Unexpected Keys"
 // http://stackoverflow.com/a/33678198/789076
 const initialReducers = {
+  articlePreview:(state = require('../routes/ArticlePreview/modules/articlePreview').initialState) => state,
   counter: (state = 0) => state,
   zen: (state = require('../routes/Zen/modules/zen').initialState) => state
 }

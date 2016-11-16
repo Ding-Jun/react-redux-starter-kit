@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const webpackConfig = require('./webpack.config')
 const HelmetWebpackPlugin = require('helmet-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const clone = require('clone')
 const config = require('../config')
@@ -58,19 +59,24 @@ webpackConfigClient.plugins = [
       }
     })
   },
-  new webpack.DefinePlugin(config.globals)/*,
-  new HtmlWebpackPlugin({
-    template : paths.src('index.html'),
-    hash     : false,
-    favicon  : paths.src('static/favicon.ico'),
-    filename : 'index.html',
-    inject   : 'body',
-    minify   : {
-      collapseWhitespace : true
-    }
-  })*/
+  new webpack.DefinePlugin(config.globals)
 ]
 
+if(!config.universal.enabled){
+  debug('Enable plugins for non-universal (HtmlWebpackPlugin, 非universal使用).')
+  webpackConfigClient.plugins.push(
+    new HtmlWebpackPlugin({
+      template : paths.src('index.html'),
+      hash     : false,
+      favicon  : paths.src('static/favicon.ico'),
+      filename : 'index.html',
+      inject   : 'body',
+      minify   : {
+        collapseWhitespace : true
+      }
+    })
+  )
+}
 if (__DEV__) {
   debug('Enable plugins for live development (HMR, NoErrors).')
   webpackConfigClient.plugins.push(

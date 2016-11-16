@@ -2,9 +2,10 @@
  * Created by admin on 2016/11/10.
  */
 import React from 'react'
-
+import Helmet from 'react-helmet'
 export const Zen = (props) => (
   <div style={{ margin: '0 auto' }} >
+    <Helmet title='zen'/>
     <h2>Zen</h2>
 
     {' '}

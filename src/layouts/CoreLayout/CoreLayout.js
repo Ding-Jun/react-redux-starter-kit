@@ -1,12 +1,14 @@
 import React from 'react'
 import Header from '../../components/Header'
-import './CoreLayout.scss'
-import '../../styles/core.scss'
+import Nav from '../../components/Nav'
+//import './CoreLayout.scss'
+//import '../../styles/core.scss'
 
 export const CoreLayout = ({ children }) => (
-  <div className='container text-center'>
+  <div style={{ height: '100%' }}>
     <Header />
-    <div className='core-layout__viewport'>
+    <Nav />
+    <div className='home-content'>
       {children}
     </div>
   </div>

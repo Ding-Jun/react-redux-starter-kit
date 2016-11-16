@@ -59,6 +59,7 @@ export default (getClientInfo) => (req, res, next) => {
       head = Helmet.rewind()
       res.status(500)
         .send(renderHtmlLayout(head, <div dangerouslySetInnerHTML={{__html: content}} />))
+      console.log('content',content)
     }
 
     // This will be transferred to the client side in __LAYOUT__ variable

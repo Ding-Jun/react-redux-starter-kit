@@ -6,7 +6,8 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
 import layout from '../config/layout'
-
+import 'es6-promise/auto';
+import axios from 'axios';
 // ========================================================
 // Browser History Setup
 // ========================================================

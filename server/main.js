@@ -20,6 +20,8 @@ module.exports = function* (){
     // (ignoring file requests).
     debug('Enable HistoryApiFallback middleware.')
     app.use(require('connect-history-api-fallback')())
+
+
   }
 
   // ------------------------------------
