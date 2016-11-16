@@ -1,7 +1,7 @@
 /**
  * Created by admin on 2016/11/16.
  */
-
+import axios from 'axios'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -52,9 +52,19 @@ export function clearArticlePage() {
 export function fetchArticlePage(targetPage,query) {
   return (dispatch, getState) => {
     dispatch(requestArticlePage())
-    return fetch('https://api.github.com/zen')
-      .then(data => data.text())
-      .then(text => dispatch(recieveZen(text)))
+    return (
+      axios.get('http://zl.fan66.cn/nczl-web/rs/article/list?curPage=1&pageSize=20', {
+        params: {
+          ID: 12345
+        }
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+    )
   }
 }
 

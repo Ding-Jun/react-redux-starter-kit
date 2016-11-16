@@ -31,6 +31,7 @@ class ArticlePreview extends React.Component {
 
   componentWillMount() {
     this.queryArticleList(1);
+    this.props.fetchArticlePage()
   }
 
   handleQueryArticle(event) {
