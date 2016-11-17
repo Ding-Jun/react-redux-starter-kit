@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { fetchArticlePage, clearArticlePage } from '../modules/articlePreview'
+import { actions as articlePreviewActions} from '../modules/articlePreview'
 
 /*  This is a container component. Notice it does not contain any JSX,
  nor does it import React. This component is **only** responsible for
@@ -13,12 +13,11 @@ import ArticlePreview from '../components/ArticlePreview'
  implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  fetchArticlePage,
-  clearArticlePage
+  ...articlePreviewActions
 }
 
 const mapStateToProps = (state) => ({
-  ...state
+  ...state.articlePreview
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

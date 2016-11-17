@@ -46,6 +46,18 @@ const config = {
     client_info : 'client_info.json'
   },
   // ----------------------------------
+  // proxy Configuration
+  // ----------------------------------
+  proxy       : {
+    enabled     : true,
+    matchUrl    : /^\/nczl-web\/.*/,
+    options     : {
+      target    : 'http://zl.fan66.cn', // target host
+      changeOrigin: true,               // needed for virtual hosted sites
+      logLevel  : 'debug'
+    }
+  },
+  // ----------------------------------
   // Compiler Configuration
   // ----------------------------------
   compiler_babel : {

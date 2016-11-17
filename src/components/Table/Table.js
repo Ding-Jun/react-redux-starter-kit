@@ -55,8 +55,8 @@ class Table extends React.Component {
     return <tbody>{rows}</tbody>
   }
   render() {
-    console.log("columns", this.props.columns);
-    console.log("dataSource", this.props.dataSource);
+    //console.log("columns", this.props.columns);
+    //console.log("dataSource", this.props.dataSource);
     const tHeaders=this.getHeader(this.props.columns);
 
     const tRows = this.getRows(this.props.dataSource,this.props.columns);

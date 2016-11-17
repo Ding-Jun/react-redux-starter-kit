@@ -13,104 +13,59 @@ import $ from 'jquery'
 import 'components/util/date'
 const iconAdd = require('static/images/icon_add.gif');
 class ArticlePreview extends React.Component {
-  constructor(props) {
-    super(props);
-    // Operations usually carried out in componentWillMount go here
-    this.state = {
-      page: {
-        rowData: []
-      },
-      loading: true,
-      query:{
-        columnId:this.props.params.columnId=="all"?'':this.props.params.columnId,
-        title:""
-      },
-      searchValue:''
-    }
+  static propTypes = {
+    fetching          : React.PropTypes.bool.isRequired,
+    page              : React.PropTypes.object.isRequired,
+    query             : React.PropTypes.object.isRequired,
+    searchValue       : React.PropTypes.string.isRequired,
+    fetchArticleList  : React.PropTypes.func.isRequired,
+    setSearchValue    : React.PropTypes.func.isRequired,
+    deleteArticle    : React.PropTypes.func.isRequired
   }
-
   componentWillMount() {
-    this.queryArticleList(1);
-    this.props.fetchArticlePage()
+    //this.queryArticleList(1);
+    this.props.fetchArticleList(1)
   }
 
-  handleQueryArticle(event) {
-    event.preventDefault();
-    var targetPage = event.currentTarget.getAttribute("data-page");
-    this.setState({
-      loading: true
-    })
-    this.queryArticleList(targetPage);
+  handleQueryArticle(e) {
+    e.preventDefault();
+    var targetPage = e.currentTarget.getAttribute("data-page");
+    this.props.fetchArticleList(targetPage);
   }
+
   handleSearchValueChange(e){
     e.preventDefault();
     var value=e.target.value;
-    this.setState({searchValue:value});
-    //value= value.replace()
+    this.props.setSearchValue(value);
   }
-  queryArticleList(targetPage,query) {
-    query=query||this.state.query;
-    var queryString='';
-    for(var arg in query){
-      if(query[arg]){queryString+=`&${arg}=${query[arg]}`}
-    }
-    var url=`/nczl-web/rs/article/list?curPage=${targetPage}&pageSize=20`+queryString;
-    $.ajax({
-      type: 'GET',
-      url: url,
-      dataType: 'json',
-      success: function (rm) {
-        if (rm.code == 1) {
-          console.log('debug', rm.result);
-          this.setState({
-            page: rm.result,
-            loading: false
-          })
-        }
-      }.bind(this)
-    })
 
-  }
   handleSearch(e){
     e.preventDefault();
-    var query=this.state.query;
-    query.title=this.state.searchValue;
-    this.queryArticleList(1,query);
-    this.setState({query:query});
+    var {query,searchValue} = this.props;
+    query.title=searchValue;
+    this.props.fetchArticleList(1,query);
   }
+
   handleColumnClick(e){
     e.preventDefault();
     const columnId=  e.target.getAttribute("data-column-id");
-    var query=this.state.query;
+    var query=this.props.query;
     query.columnId=columnId;
-    this.setState({query:query,loading: true});
-    this.queryArticleList(1,query);
+    this.props.fetchArticleList(1,query);
   }
+
   handleDeleteArticle(e){
     e.preventDefault();
-    var query=this.state.query;
     var targetId = e.currentTarget.getAttribute("data-id");
     console.log('targetId',targetId);
     var r = confirm("确认删除?");
     if (r == true) {
-      var url = `/nczl-web/rs/article/delete`;
-      $.ajax({
-        type: 'POST',
-        url: url,
-        data: {
-          id: targetId
-        },
-        dataType: 'json',
-        success: function (rm) {
-          if (rm.code == 1) {
-            this.queryArticleList(this.state.page.curPage,query);
-          }
-        }.bind(this)
-      })
+      this.props.deleteArticle(targetId);
     }
   }
 
   render() {
+    const {page,fetching,searchValue} = this.props;
     const columns = [{title: '标题', dataIndex: 'title', width: "39%", key: 'title'},
       {title: '所属分类', dataIndex: 'columnName', width: "8%", key: 'columnName', isOptd: true},
       {title: '浏览量', dataIndex: 'pageviews', width: "7%", key: 'pageviews'},
@@ -121,7 +76,7 @@ class ArticlePreview extends React.Component {
       {title: '置顶？', dataIndex: 'isStick', width: "4%", key: 'isStick'},
       {title: '状态', dataIndex: 'status', width: "6%", key: 'status'},
       {title: '操作', dataIndex: 'operation', width: "9%", key: 'operation', isOptd: true}];
-    var dataList = this.state.page.rowData || [];
+    var dataList = page && page.rowData || [];
     var dataSource = dataList.map((article)=> {
       var status;
       switch (article.status){
@@ -150,15 +105,15 @@ class ArticlePreview extends React.Component {
       }
     });
     return (
-      <Card title={<span>文章管理</span>}>
+      <Card title={<span>文章管理223343</span>}>
         <Helmet title="文章管理"/>
         <div className="total">
           <span className="xe"><Link to="/article/detail/edit/new"><Button prefixCls="add-btn" ><img
             src={iconAdd}/> 新增</Button></Link></span>请输入关键字搜索：
-          <input className="input1" type="text" value={this.state.searchValue} onChange={this.handleSearchValueChange.bind(this)} /> <Button onClick={this.handleSearch.bind(this)}>搜索</Button>
+          <input className="input1" type="text" value={searchValue} onChange={this.handleSearchValueChange.bind(this)} /> <Button onClick={this.handleSearch.bind(this)}>搜索</Button>
         </div>
-        <Table dataSource={dataSource} columns={columns} loading={this.state.loading}/>
-        <Pagination  page={this.state.page} onClick={this.handleQueryArticle.bind(this)}/>
+        <Table dataSource={dataSource} columns={columns} loading={fetching}/>
+        <Pagination  page={page} onClick={this.handleQueryArticle.bind(this)}/>
       </Card>
     )
   }

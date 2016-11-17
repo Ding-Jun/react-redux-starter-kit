@@ -30,7 +30,7 @@ class ColumnPreview extends React.Component {
 
   componentWillMount() {
     console.log('degbu',this.props.params.targetPage)
-    this.queryColumnList(this.props.params.targetPage);
+    this.props.fetchColumnList(this.props.params.targetPage);
   }
 
   handleQueryColumn(event) {
@@ -138,6 +138,7 @@ class ColumnPreview extends React.Component {
   }
 
   render() {
+    const {fetching,page} = this.props;
     const columns = [{
       title: '分类名称',
       dataIndex: 'columnName',
@@ -156,7 +157,7 @@ class ColumnPreview extends React.Component {
       key: 'operation',
       isOptd: true
     }];
-    var dataList = this.state.page.rowData || [];
+    var dataList = page && page.rowData || [];
     var dataSource = dataList.map((column)=> {
       const count = column.articleCount;
       const name=column.columnName;
@@ -185,11 +186,12 @@ class ColumnPreview extends React.Component {
                 </Button>
               </span>
         </div>
-        <Table dataSource={dataSource} columns={columns} loading={this.state.loading}/>
+        <Table dataSource={dataSource} columns={columns} loading={fetching}/>
         <Pagination page={this.state.page} onClick={this.handleQueryColumn.bind(this)}/>
+        {/*
         <Modal title={modal.title} visible={modal.visible} onClose={this.closeModal.bind(this)}
                onOk={this.handleEditConfirm.bind(this)}
-        >分类名称：<Input focus value={modal.inputValue} onChange={this.handleInputChange.bind(this)} /></Modal>
+        >分类名称：<Input focus value={modal.inputValue} onChange={this.handleInputChange.bind(this)} /></Modal>*/}
       </Card>
     )
   }

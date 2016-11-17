@@ -5,9 +5,11 @@ import axios from 'axios'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const ARTICLE_PAGE_REQUEST = 'ARTICLE_PAGE_REQUEST'
-export const ARTICLE_PAGE_RECEIVE = 'ARTICLE_PAGE_RECEIVE'
-export const ARTICLE_PAGE_CLEAR = 'ARTICLE_PAGE_CLEAR'
+export const ARTICLE_LIST_REQUEST = 'ARTICLE_LIST_REQUEST'
+export const ARTICLE_LIST_RECEIVE = 'ARTICLE_LIST_RECEIVE'
+export const ARTICLE_LIST_CLEAR   = 'ARTICLE_LIST_CLEAR'
+export const SEARCH_VALUE_SET     = 'ARTICLE_SEARCH_VALUE_SET'
+export const ARTICLE_QUERY_SET    = 'ARTICLE_QUERY_SET'
 /*
 articlePreview{
  fetching:Boolean,		//是否请求数据中
@@ -26,20 +28,32 @@ articlePreview{
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function requestArticlePage () {
+export function requestArticleList () {
   return {
-    type    : ARTICLE_PAGE_REQUEST
+    type    : ARTICLE_LIST_REQUEST
   }
 }
-export function receiveArticlePage(page) {
+export function receiveArticleList(page) {
   return {
-    type    :ARTICLE_PAGE_RECEIVE,
-    payload :page
+    type    : ARTICLE_LIST_RECEIVE,
+    payload : page
   }
 }
-export function clearArticlePage() {
+export function clearArticleList() {
   return {
-    type    :ARTICLE_PAGE_CLEAR
+    type    : ARTICLE_LIST_CLEAR
+  }
+}
+export function setSearchValue(value) {
+  return {
+    type    : SEARCH_VALUE_SET,
+    payload : value
+  }
+}
+export function setQuery(query) {
+  return {
+    type    : ARTICLE_QUERY_SET,
+    payload : query
   }
 }
 /*  This is a thunk, meaning it is a function that immediately
@@ -49,17 +63,27 @@ export function clearArticlePage() {
  NOTE: This is solely for demonstration purposes. In a real application,
  you'd probably want to dispatch an action of COUNTER_DOUBLE and let the
  reducer take care of this logic.  */
-export function fetchArticlePage(targetPage,query) {
+export function fetchArticleList(targetPage,query) {
   return (dispatch, getState) => {
-    dispatch(requestArticlePage())
+    var payload=getState().articlePreview.query;
+    if(query){
+      payload = query;
+      dispatch(setQuery(query));
+    }
+    console.log('query',query);
+    var queryString='';
+    for(var arg in query){
+      if(query[arg]){queryString+=`&${arg}=${payload[arg]}`}
+    }
+    console.log('queryString',queryString);
+    dispatch(requestArticleList())
     return (
-      axios.get('http://zl.fan66.cn/nczl-web/rs/article/list?curPage=1&pageSize=20', {
-        params: {
-          ID: 12345
+      axios.get(`/nczl-web/rs/article/list?curPage=${targetPage}&pageSize=20${queryString}`)
+      .then(function (res) {
+        console.log(res);
+        if(res.data.code== 1){
+          dispatch(receiveArticleList(res.data.result))
         }
-      })
-      .then(function (response) {
-        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -67,27 +91,52 @@ export function fetchArticlePage(targetPage,query) {
     )
   }
 }
-
+export function deleteArticle(targetId) {
+  return (dispatch, getState) => {
+    console.log('getState',getState());
+    return (
+      axios.post('/nczl-web/rs/article/delete', {
+        params: {
+          id: targetId
+        }
+      })
+      .then(function (res) {
+        console.log(res);
+        if(res.data.code== 1){
+          dispatch(fetchArticleList(getState().articlePreview.page.curPage))
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+    )
+  }
+}
 export const actions = {
-  requestArticlePage,
-  receiveArticlePage,
-  clearArticlePage,
-  fetchArticlePage
+  requestArticleList,
+  receiveArticleList,
+  clearArticleList,
+  fetchArticleList,
+  deleteArticle,
+  setSearchValue,
+  setQuery
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [ARTICLE_PAGE_REQUEST] : (state, action) => ({ ...state , fetching : true }),
-  [ARTICLE_PAGE_RECEIVE] : (state, action) => ({ ...state , fetching : false , page : action.payload }),
-  [ARTICLE_PAGE_CLEAR]   : (state, action) => ({ ...state , fetching : false , page : [] })
+  [ARTICLE_LIST_REQUEST] : (state, action) => ({ ...state , fetching : true }),
+  [ARTICLE_LIST_RECEIVE] : (state, action) => ({ ...state , fetching : false , page : action.payload }),
+  [ARTICLE_LIST_CLEAR]   : (state, action) => ({ ...state , fetching : false , page : [] }),
+  [SEARCH_VALUE_SET]     : (state, action) => ({ ...state , searchValue : action.payload}),
+  [ARTICLE_QUERY_SET]    : (state, action) => ({ ...state , query : action.payload })
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export const initialState = {fetching:false,page:[]}
+export const initialState = {fetching:false,page:{},searchValue:'',query:{columnId:null,title:''}}
 export default function articlePreviewReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 

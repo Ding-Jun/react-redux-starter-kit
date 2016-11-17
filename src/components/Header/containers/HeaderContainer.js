@@ -1,25 +1,23 @@
 import { connect } from 'react-redux'
-import { fetchColumnList, clearColumnList, deleteColumn} from '../modules/columnPreview'
+import { actions as modalActions} from 'components/modal'
 
 /*  This is a container component. Notice it does not contain any JSX,
  nor does it import React. This component is **only** responsible for
  wiring in the actions and state necessary to render a presentational
  component - in this case, the counter:   */
 
-import ColumnPreview from '../components/ColumnPreview'
+import Header from '../Header'
 
 /*  Object of action creators (can also be function that returns object).
  Keys will be passed as props to presentational components. Here we are
  implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  fetchColumnList,
-  clearColumnList,
-  deleteColumn
+  ...modalActions
 }
 
 const mapStateToProps = (state) => ({
-  ...state.columnPreview
+  modalOption:state.modal
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
@@ -36,4 +34,4 @@ const mapStateToProps = (state) => ({
  Selectors are composable. They can be used as input to other selectors.
  https://github.com/reactjs/reselect    */
 
-export default connect(mapStateToProps, mapDispatchToProps)(ColumnPreview)
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

@@ -12,6 +12,21 @@ module.exports = function* (){
   const app = express()
   var clientInfo
 
+  // ------------------------------------
+  // api 代理
+  // ------------------------------------
+  if(config.proxy && config.proxy.enabled){
+    var proxy = require('http-proxy-middleware');
+    // proxy middleware options
+    var options = config.proxy.options;
+
+    // create the proxy (without context)
+    var apiProxy = proxy(options);
+    debug(`Enable http-proxy-middleware.   proxy ${config.proxy.matchUrl} -> ${config.proxy.options.target}`)
+    app.use(config.proxy.matchUrl,apiProxy)
+  }
+
+
   // This rewrites all routes requests to the root /index.html file
   // (ignoring file requests). If you want to implement universal
   // rendering, you'll want to remove this middleware.

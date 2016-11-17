@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { fetchArticlePage, clearArticlePage } from '../modules/commentPreview'
+import { actions as commentPreviewActions} from '../modules/commentPreview'
 
 /*  This is a container component. Notice it does not contain any JSX,
  nor does it import React. This component is **only** responsible for
@@ -13,12 +13,11 @@ import CommentPreview from '../components/CommentPreview'
  implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  fetchArticlePage,
-  clearArticlePage
+  ...commentPreviewActions
 }
 
 const mapStateToProps = (state) => ({
-  ...state
+  ...state.commentPreview
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

@@ -8,6 +8,7 @@ import AppContainer from './containers/AppContainer'
 import layout from '../config/layout'
 import 'es6-promise/auto';
 import axios from 'axios';
+
 // ========================================================
 // Browser History Setup
 // ========================================================
