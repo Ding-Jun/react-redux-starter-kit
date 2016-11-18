@@ -4,7 +4,7 @@
 import React from 'react'
 
 const MenuItem = (props) => (
-  <li className={'nav-item '+props.className}>
+  <li {...props}>
     {props.children}
   </li>
 )

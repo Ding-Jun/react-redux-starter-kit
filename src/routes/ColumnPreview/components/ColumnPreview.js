@@ -11,10 +11,11 @@ import Button from 'components/Button'
 import Pagination from 'components/Pagination'
 import Modal from 'components/Modal'
 import Input from 'components/Input'
-
+import {COLUMN_EDIT_TYPE,COLUMN_ADD_TYPE} from '../modules/columnPreview'
 const iconAdd = require('static/images/icon_add.gif');
+const title = '分类管理';
 class ColumnPreview extends React.Component {
-  constructor(props) {
+  /*constructor(props) {
     super(props);
     // Operations usually carried out in componentWillMount go here
     this.state = {
@@ -26,7 +27,7 @@ class ColumnPreview extends React.Component {
         visible: false
       }
     }
-  }
+  }*/
 
   componentWillMount() {
     console.log('degbu',this.props.params.targetPage)
@@ -65,61 +66,43 @@ class ColumnPreview extends React.Component {
 
   handleEdit(e) {
     e.preventDefault();
+    const { openModal,closeModal,setEditOption } = this.props
     const  elem=e.currentTarget;
-    this.openModal(elem.getAttribute("data-type"),elem.getAttribute("data-id"),elem.getAttribute("data-name"));
+
+    const editOption = {
+      type:elem.getAttribute("data-type"),
+      id:elem.getAttribute("data-id"),
+      value:elem.getAttribute("data-name")||''
+    }
+    const modalOption = {
+      title:editOption.id ? '编辑':'新增',
+      closable: false
+    }
+    setEditOption(editOption)
+    openModal(modalOption);
+
   }
   handleDeleteColumn(e){
     e.preventDefault();
-    var query=this.state.query;
     var targetId = e.currentTarget.getAttribute("data-id");
     console.log('targetId',targetId);
     var r = confirm("确认删除?");
     if (r == true) {
-      var url = `/nczl-web/rs/column/delete`;
-      $.ajax({
-        type: 'POST',
-        url: url,
-        data: {
-          id: targetId
-        },
-        dataType: 'json',
-        success: function (rm) {
-          if (rm.code == 1) {
-            this.queryColumnList(this.state.page.curPage);
-          }
-        }.bind(this)
-      })
+      this.props.deleteColumn(targetId)
     }
   }
   handleInputChange(e){
     e.preventDefault();
-    var modal = this.state.modal;
-    modal.inputValue=e.target.value;
-    this.setState({
-      modal:modal
+    const {setEditOption, editOption}=this.props;
+    setEditOption({
+      ...editOption,
+      value:e.target.value
     })
   }
   handleEditConfirm() {
-    var url=`/nczl-web/rs/column/${this.state.modal.type}?columnName=${this.state.modal.inputValue}`;
-    if(this.state.modal.type=='edit'){
-      url+=`&id=${this.state.modal.id}`;
-    }
-    $.ajax({
-      type: 'POST',
-      url:url,
-      dataType: 'json',
-      success: function (rm) {
-        if (rm.code == 1) {
-          console.log('debug', rm.result);
-          this.queryColumnList(1);
-          this.closeModal();
-
-        }
-      }.bind(this)
-    })
-
+    this.props.editColumn();
   }
-
+/*
   openModal(type, columnId,columnName) {
     switch (type) {
       case 'add':
@@ -135,10 +118,10 @@ class ColumnPreview extends React.Component {
 
   closeModal() {
     this.setState({modal: {visible: false}});
-  }
+  }*/
 
   render() {
-    const {fetching,page} = this.props;
+    const {fetching,page, closeModal, modalOption,editOption} = this.props;
     const columns = [{
       title: '分类名称',
       dataIndex: 'columnName',
@@ -167,31 +150,29 @@ class ColumnPreview extends React.Component {
         articleCnt: count ? <Link to={`/article/preview/${column.id}/1`}>{count}</Link> : count,
         operation: (
           <span>
-            <a href="#" data-type="edit" data-name={name} data-id={column.id}
+            <a href="#" data-type={COLUMN_EDIT_TYPE} data-name={name} data-id={column.id}
                onClick={this.handleEdit.bind(this)}>编辑</a>
             <a href="#" data-id={column.id} onClick={this.handleDeleteColumn.bind(this)}>删除</a>
           </span>
         )
       }
     });
-    var modal=this.state.modal;
-    console.log('modal',modal)
     return (
-      <Card title={<span>分类管理</span>}>
-        <Helmet title="分类管理"/>
+      <Card title={<span>{title}</span>}>
+        <Helmet title={`${title} 第${page.curPage}页` }/>
         <div className="total">
               <span className="xe">
-                <Button prefixCls="add-btn" data-type="add"
+                <Button prefixCls="add-btn" data-type={COLUMN_ADD_TYPE}
                         onClick={this.handleEdit.bind(this)}><img src={iconAdd}/> 新增
                 </Button>
               </span>
         </div>
         <Table dataSource={dataSource} columns={columns} loading={fetching}/>
-        <Pagination page={this.state.page} onClick={this.handleQueryColumn.bind(this)}/>
-        {/*
-        <Modal title={modal.title} visible={modal.visible} onClose={this.closeModal.bind(this)}
+        <Pagination page={page} onClick={this.handleQueryColumn.bind(this)}/>
+
+        <Modal title={modalOption.title} visible={modalOption.visible} onClose={closeModal}
                onOk={this.handleEditConfirm.bind(this)}
-        >分类名称：<Input focus value={modal.inputValue} onChange={this.handleInputChange.bind(this)} /></Modal>*/}
+        >分类名称：<Input  value={editOption.value} onChange={this.handleInputChange.bind(this)} /></Modal>
       </Card>
     )
   }

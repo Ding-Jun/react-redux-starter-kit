@@ -4,8 +4,10 @@ import Home from './Home'
 import CounterRoute from './Counter'
 import ZenRoute from './Zen'
 import ArticlePreviewRoute from './ArticlePreview'
+import ArticleDetailRoute from './ArticleDetail'
 import ColumnPreviewRoute from './ColumnPreview'
 import CommentPreviewRoute from './CommentPreview'
+
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
@@ -18,7 +20,8 @@ export const createRoutes = (store) => ({
     ZenRoute(store),
     ArticlePreviewRoute(store),
     ColumnPreviewRoute(store),
-    CommentPreviewRoute(store)
+    CommentPreviewRoute(store),
+    ArticleDetailRoute(store)
   ]
 })
 

@@ -113,8 +113,6 @@ export function deleteArticle(targetId) {
   }
 }
 export const actions = {
-  requestArticleList,
-  receiveArticleList,
   clearArticleList,
   fetchArticleList,
   deleteArticle,
@@ -128,7 +126,7 @@ export const actions = {
 const ACTION_HANDLERS = {
   [ARTICLE_LIST_REQUEST] : (state, action) => ({ ...state , fetching : true }),
   [ARTICLE_LIST_RECEIVE] : (state, action) => ({ ...state , fetching : false , page : action.payload }),
-  [ARTICLE_LIST_CLEAR]   : (state, action) => ({ ...state , fetching : false , page : [] }),
+  [ARTICLE_LIST_CLEAR]   : (state, action) => ({ ...state , fetching : false , page : {} }),
   [SEARCH_VALUE_SET]     : (state, action) => ({ ...state , searchValue : action.payload}),
   [ARTICLE_QUERY_SET]    : (state, action) => ({ ...state , query : action.payload })
 }

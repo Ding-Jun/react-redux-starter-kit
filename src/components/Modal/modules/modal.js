@@ -37,7 +37,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export const initialState = {visible:false,title:"信息", content:`some content`, closable:false, onOk:()=>{}}
+export const initialState = {visible:false,title:"title", content:`content2`, closable:false, onOk:()=>{console.log('hehe')}}
 export default function modalReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 

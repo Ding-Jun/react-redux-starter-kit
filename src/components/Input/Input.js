@@ -24,7 +24,6 @@ class Input extends React.Component {
 
   static defaultProps = {
     prefixCls: "input1",
-    validate: false,
     onChange(){}
   }
   componentDidMount(){
@@ -91,9 +90,11 @@ class Input extends React.Component {
 
   renderInput() {
     const {prefixCls, className,onChange}=this.props;
+    var value =this.props.value
 
     const otherProps = omit(this.props, [
-
+        'value',
+        'onChange',
         'className',
         'prefixCls'
       ]
@@ -102,19 +103,19 @@ class Input extends React.Component {
       [prefixCls]: true,
       [className]: !!className
     })
-    /*var value = this.state.value
+
     if (value == null) {
       value = this.fixControlledValue(this.props.value);
-    }*/
+    }
     switch (this.props.type) {
       case 'textarea':
         return (
-          <textarea ref="input" {...otherProps} className={classes} onChange={onChange}
+          <textarea ref="input" {...otherProps} className={classes} onChange={onChange} value={value}
                     >{this.props.children}</textarea>
         )
       default:
         return (
-          <input ref="input" {...otherProps} className={classes} onChange={onChange}
+          <input ref="input" {...otherProps} className={classes} onChange={onChange} value={value}
                  >{this.props.children}</input>
         )
     }

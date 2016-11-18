@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
-import { fetchColumnList, clearColumnList, deleteColumn} from '../modules/columnPreview'
-
+import { actions as columnActions} from '../modules/columnPreview'
 /*  This is a container component. Notice it does not contain any JSX,
  nor does it import React. This component is **only** responsible for
  wiring in the actions and state necessary to render a presentational
@@ -13,9 +12,7 @@ import ColumnPreview from '../components/ColumnPreview'
  implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  fetchColumnList,
-  clearColumnList,
-  deleteColumn
+  ...columnActions
 }
 
 const mapStateToProps = (state) => ({

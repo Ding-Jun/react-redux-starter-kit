@@ -92,11 +92,7 @@ export function deleteComment(targetId) {
   return (dispatch, getState) => {
     console.log('getState',getState());
     return (
-      axios.post('/nczl-web/rs/comment/delete', {
-        params: {
-          id: targetId
-        }
-      })
+      axios.post('/nczl-web/rs/comment/delete', queryString.stringify({id:targetId}))
         .then(function (res) {
           console.log(res);
           if(res.data.code== 1){
@@ -145,8 +141,6 @@ export function batchAuditComment(ids,status) {
 }
 
 export const actions = {
-  requestCommentList,
-  receiveCommentList,
   clearCommentList,
   fetchCommentList,
   deleteComment,

@@ -52,7 +52,7 @@ const config = {
     enabled     : true,
     matchUrl    : /^\/nczl-web\/.*/,
     options     : {
-      target    : 'http://zl.fan66.cn', // target host
+      target    : 'http://zl.fan66.cn',// 'http://zl.fan66.cn', // target host
       changeOrigin: true,               // needed for virtual hosted sites
       logLevel  : 'debug'
     }

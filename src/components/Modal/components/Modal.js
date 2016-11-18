@@ -2,7 +2,7 @@
  * Created by admin on 2016/10/21.
  */
 import React from 'react'
-import Button from '../Button'
+import Button from 'components/Button'
 import {omit} from 'lodash'
 import classnames from 'classnames'
 class Modal extends React.Component {
@@ -56,7 +56,7 @@ class Modal extends React.Component {
           <div className={`${prefixCls}-title`}>
             {title}
             {closable?<span className={`${prefixCls}-close`} onClick={onClose}>
-              <img src={require('../commonResource/icon_close.png')}></img>
+              <img src={require('components/commonResource/icon_close.png')}></img>
             </span>:null}
           </div>
           <div className={`${prefixCls}-content`}>

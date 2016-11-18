@@ -8,7 +8,6 @@ import Table from 'components/Table'
 import Button from 'components/Button'
 import Pagination from 'components/Pagination'
 import Helmet from 'react-helmet'
-import $ from 'jquery'
 
 import 'components/util/date'
 const iconAdd = require('static/images/icon_add.gif');
@@ -97,8 +96,8 @@ class ArticlePreview extends React.Component {
         comments: article.comments?<Link to={`/article/${article.id}/1`}>{article.comments}</Link>:article.comments,
         operation: (
           <span>
-            <Link to={`/article/detail/readOnly/${article.id}`}>详细</Link>
-            <Link to={`/article/detail/edit/${article.id}`}>编辑</Link>
+            <Link to={`/article/detail/${article.id}/readOnly`}>详细</Link>
+            <Link to={`/article/detail/${article.id}/edit`}>编辑</Link>
             <a href="#" data-id={article.id} onClick={this.handleDeleteArticle.bind(this)}>删除</a>
           </span>
         )
