@@ -18,6 +18,7 @@ class ArticlePreview extends React.Component {
     query             : React.PropTypes.object.isRequired,
     searchValue       : React.PropTypes.string.isRequired,
     fetchArticleList  : React.PropTypes.func.isRequired,
+    clearArticleList  : React.PropTypes.func.isRequired,
     setSearchValue    : React.PropTypes.func.isRequired,
     deleteArticle    : React.PropTypes.func.isRequired
   }
@@ -25,7 +26,9 @@ class ArticlePreview extends React.Component {
     //this.queryArticleList(1);
     this.props.fetchArticleList(1)
   }
-
+  componentWillUnmount() {
+    this.props.clearArticleList();
+  }
   handleQueryArticle(e) {
     e.preventDefault();
     var targetPage = e.currentTarget.getAttribute("data-page");
@@ -107,7 +110,7 @@ class ArticlePreview extends React.Component {
       <Card title={<span>文章管理223343</span>}>
         <Helmet title="文章管理"/>
         <div className="total">
-          <span className="xe"><Link to="/article/detail/edit/new"><Button prefixCls="add-btn" ><img
+          <span className="xe"><Link to="/article/detail/new/edit"><Button prefixCls="add-btn" ><img
             src={iconAdd}/> 新增</Button></Link></span>请输入关键字搜索：
           <input className="input1" type="text" value={searchValue} onChange={this.handleSearchValueChange.bind(this)} /> <Button onClick={this.handleSearch.bind(this)}>搜索</Button>
         </div>

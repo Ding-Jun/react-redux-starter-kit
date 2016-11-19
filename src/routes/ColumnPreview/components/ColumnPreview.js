@@ -33,7 +33,9 @@ class ColumnPreview extends React.Component {
     console.log('degbu',this.props.params.targetPage)
     this.props.fetchColumnList(this.props.params.targetPage);
   }
-
+  componentWillUnmount() {
+    this.props.clearColumnList();
+  }
   handleQueryColumn(event) {
 
     event.preventDefault();

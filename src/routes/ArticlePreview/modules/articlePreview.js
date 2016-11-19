@@ -2,6 +2,7 @@
  * Created by admin on 2016/11/16.
  */
 import axios from 'axios'
+import queryString from 'query-string'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -95,11 +96,7 @@ export function deleteArticle(targetId) {
   return (dispatch, getState) => {
     console.log('getState',getState());
     return (
-      axios.post('/nczl-web/rs/article/delete', {
-        params: {
-          id: targetId
-        }
-      })
+      axios.post('/nczl-web/rs/article/delete', queryString.stringify({ id:targetId }))
       .then(function (res) {
         console.log(res);
         if(res.data.code== 1){
@@ -126,7 +123,7 @@ export const actions = {
 const ACTION_HANDLERS = {
   [ARTICLE_LIST_REQUEST] : (state, action) => ({ ...state , fetching : true }),
   [ARTICLE_LIST_RECEIVE] : (state, action) => ({ ...state , fetching : false , page : action.payload }),
-  [ARTICLE_LIST_CLEAR]   : (state, action) => ({ ...state , fetching : false , page : {} }),
+  [ARTICLE_LIST_CLEAR]   : (state, action) => ( initialState ),
   [SEARCH_VALUE_SET]     : (state, action) => ({ ...state , searchValue : action.payload}),
   [ARTICLE_QUERY_SET]    : (state, action) => ({ ...state , query : action.payload })
 }

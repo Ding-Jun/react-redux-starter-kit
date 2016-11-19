@@ -3,6 +3,7 @@
  */
 import axios from 'axios'
 import queryString from 'query-string'
+import omit from 'lodash/omit'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -107,12 +108,14 @@ export function fetchColumnSelect() {
     )
   }
 }
-export function editArticle () {
+export function editArticle (type) {
   return (dispatch, getState) => {
     dispatch(requestArticle())
-    const {article} =getState().articleDetail;
+    let {articleDetail} = getState();
+    const article =omit( articleDetail, ['fetching','columnFetching','columnSelect','contents']) ;
+    article.content = articleDetail.contents;
     return (
-      axios.post(`/nczl-web/rs/article/edit`, queryString.stringify( article ))
+      axios.post(`/nczl-web/rs/article/${type}`, queryString.stringify( article ))
         .then(function (res) {
           console.log(res);
           if(res.data.code== 1){
@@ -139,14 +142,10 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [ARTICLE_REQUEST] : (state, action) => ({ ...state , fetching : true }),
-  [ARTICLE_RECEIVE] : (state, action) => ({ ...state , fetching : false , article:action.payload }),
+  [ARTICLE_RECEIVE] : (state, action) => ({ ...state , fetching : false , ...action.payload }),
   [ARTICLE_CLEAR]   : (state, action) => ( initialState ),
   [ARTICLE_SET]     : (state, action) => {
-    const {name,value} = action.payload;
-    console.log("ccc",name,value)
-    if(name == 'summary'){
-
-    }
+    let {name,value} = action.payload;
     return {
       ...state,
       [name]:value
@@ -163,14 +162,13 @@ export const initialState = {
   fetching:false,
   columnFetching : false,
   columnSelect : [],
-  article:{
-    title:'标题',
-    author:'作者',
-    status: ARTICLE_STATUS_STOP,
-    stick : false,
-    summary: '摘要',
-    contents: '正文'
-  }
+  title:'标题',
+  author:'作者',
+  columnId: 1,
+  status: ARTICLE_STATUS_STOP,
+  stick : 1,
+  summary: '摘要',
+  contents: '正文'
 }
 export default function articleDetailReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]

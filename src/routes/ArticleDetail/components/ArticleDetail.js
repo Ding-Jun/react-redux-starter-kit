@@ -10,6 +10,7 @@ import 'components/util/date'
 
 const ARTICLE_READ_TYPE = 'readOnly'
 const ARTICLE_EDIT_TYPE = 'edit'
+const ARTICLE_ADD_TYPE = 'add'
 const FormItem = Form.Item
 
 class ArticleDetail extends React.Component{
@@ -27,16 +28,34 @@ class ArticleDetail extends React.Component{
     }
 
   }
+  componentWillUnmount() {
+    this.props.clearArticle();
+  }
   handleFieldChange(e) {
     let name = e.target.name;
     const {setArticle} = this.props
     let value = e.target.value;
+    if(name == 'summary'){
+      value = value.substr(0, 50);
+    }
     setArticle( name, value );
     console.log("handleFieldChange", name, "--", value)
   }
+  handleEditArticle(e){
+    e.preventDefault();
+    const {articleId, type} = this.props.params;
+    if( type == ARTICLE_EDIT_TYPE ){
+      if(articleId !== 'new'){
+        this.props.editArticle(ARTICLE_EDIT_TYPE)
+      }
+      else {
+        this.props.editArticle(ARTICLE_ADD_TYPE)
+      }
+    }
 
+  }
   render(){
-    const { params, columnSelect } = this.props;
+    const { params, columnSelect} = this.props;
     const props= this.props;
     const {articleId, type} = params;
     const readOnly = type == ARTICLE_READ_TYPE;
@@ -121,13 +140,13 @@ class ArticleDetail extends React.Component{
            <FormItem label="正文：" required={!readOnly}>
              {readOnly ? <Input  id="contents" type="textarea" cols="90" rows="5" value={props.contents} name="contents"
                                 readOnly/> :
-               <Input  id="contents" type="textarea" cols="90" rows="5" value={props.contents} name="contents"
+               <Input  id="contents" type="textarea" cols="90" rows="5" value={props.contents} onChange={this.handleFieldChange.bind(this)} name="contents"
                />/*去掉了onCHange  有tinymce 没啥用*/}
              {/*<TinyMCEInput tinymceConfig={TINYMCE_CONFIG}></TinyMCEInput>*/}
 
            </FormItem>
            <FormItem>
-             <Button prefixCls="btn_4"  style={{margin: "3px"}}>{readOnly?'编辑信息':'保存'}</Button>
+             <Button prefixCls="btn_4"  style={{margin: "3px"}} onClick={readOnly?null:this.handleEditArticle.bind(this)}>{readOnly?'编辑信息':'保存'}</Button>
              <Button prefixCls="btn_4"  style={{margin: "3px"}}>返回</Button>
            </FormItem>
          </Form>
