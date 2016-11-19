@@ -1,4 +1,4 @@
-/**
+/**S
  * Created by admin on 2016/11/16.
  */
 import axios from 'axios'
@@ -12,6 +12,9 @@ export const ARTICLE_CLEAR   = 'ARTICLE_CLEAR'
 export const ARTICLE_SET     = 'ARTICLE_SET'
 export const COLUMN_SELECT_RECEIVE = 'COLUMN_SELECT_RECEIVE'
 export const COLUMN_SELECT_REQUEST = 'COLUMN_SELECT_REQUEST'
+
+export const ARTICLE_STATUS_STOP    = 0    //已停止
+export const ARTICLE_STATUS_RELEASE = 1    //已发布
 /*
 articlePreview{
  fetching:Boolean,		//是否请求数据中
@@ -46,10 +49,10 @@ export function clearArticle () {
     type    : ARTICLE_CLEAR
   }
 }
-export function setArticle (article) {
+export function setArticle (name,value) {
   return {
     type    : ARTICLE_SET,
-    payload : article
+    payload : {name,value}
   }
 }
 export function requestColumnSelect() {
@@ -136,9 +139,19 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [ARTICLE_REQUEST] : (state, action) => ({ ...state , fetching : true }),
-  [ARTICLE_RECEIVE] : (state, action) => ({ ...state , fetching : false , article : action.payload }),
-  [ARTICLE_CLEAR]   : (state, action) => ({ ...state , fetching : false , article : {} }),
-  [ARTICLE_SET]     : (state, action) => ({ ...state , article : action.payload}),
+  [ARTICLE_RECEIVE] : (state, action) => ({ ...state , fetching : false , article:action.payload }),
+  [ARTICLE_CLEAR]   : (state, action) => ( initialState ),
+  [ARTICLE_SET]     : (state, action) => {
+    const {name,value} = action.payload;
+    console.log("ccc",name,value)
+    if(name == 'summary'){
+
+    }
+    return {
+      ...state,
+      [name]:value
+    }
+  },
   [COLUMN_SELECT_REQUEST] : (state, action) => ({ ...state , columnFetching : true }),
   [COLUMN_SELECT_RECEIVE] : (state, action) => ({ ...state , columnFetching : false , columnSelect : action.payload })
 }
@@ -146,7 +159,19 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export const initialState = { fetching:false, article:{}, columnFetching : false, columnSelect : [] }
+export const initialState = {
+  fetching:false,
+  columnFetching : false,
+  columnSelect : [],
+  article:{
+    title:'标题',
+    author:'作者',
+    status: ARTICLE_STATUS_STOP,
+    stick : false,
+    summary: '摘要',
+    contents: '正文'
+  }
+}
 export default function articleDetailReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 

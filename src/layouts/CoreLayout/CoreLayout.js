@@ -7,8 +7,9 @@ import Nav from '../../components/Nav'
 export const CoreLayout = ({ children }) => (
   <div style={{ height: '100%' }}>
     <HeaderContainer />
+    <Nav />
     <div className='home-content'>
-      <Nav />
+
       {children}
     </div>
   </div>
