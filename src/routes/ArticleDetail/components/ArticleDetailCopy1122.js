@@ -9,7 +9,6 @@ import Form from 'components/Form'
 import Input from 'components/Input'
 import Button from 'components/Button'
 import Modal from 'components/Modal'
-import Cropper from 'components/Cropper'
 import 'components/util/date'
 import getObjectUrl from 'components/util/getObjectUrl'
 
@@ -262,7 +261,7 @@ class ArticleDetail extends React.Component{
                          onChange={this.handleFieldChange.bind(this)}/>
                 <br />
                   字数上限：50</span>}
-            <Cropper className={cropping?null:""} id="img-container" style={{maxHeight: "500px"}}/>
+
            </FormItem>
            <FormItem label="正文：" required={!readOnly}>
              <div style={{maxWidth:'1080px'}}>
@@ -274,10 +273,10 @@ class ArticleDetail extends React.Component{
              <Button prefixCls="btn_4"  style={{margin: "3px"}} onClick={this.handleGoBack.bind(this)}>返回</Button>
            </FormItem>
          </Form>
-         <Modal id="modals" {...modalOption} onClose={this.props.closeModal.bind(this)}
+         <Modal {...modalOption} onClose={this.props.closeModal.bind(this)}
                 onOk={cropping?this.handleCrop.bind(this):(this.handleOk.bind(this))}
          >
-           <div className={cropping?null:"hide"} id="img-container2" style={{maxHeight: "500px"}}>
+           <div className={cropping?null:"hide"} id="img-container" style={{maxHeight: "500px"}}>
              <img  style={{width: "280px", height: "280px"}}/>
            </div>
          </Modal>
