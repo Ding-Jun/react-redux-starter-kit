@@ -37,12 +37,14 @@ function createForm(options) {
         this.fields[id].rules = this.fields[id].rules || options.rules;
         return {
           id: id,
+          value:this.fields[id].value,
           onChange: this.onChangeValidate.bind(this, id)
         }
       }
 
       onChangeValidate(name, event) {
         const value = event.target.value;
+        this.fields[name].value=value;
         this.validateField(name, value);
       }
 

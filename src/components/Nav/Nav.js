@@ -12,7 +12,7 @@ class Nav extends React.Component{
     return (
       <div className="home-nav" style={{ height: '100%' }}>
         <Menu>
-          <Link to="/article/preview/all/1" className="nav-item" activeClassName='nav-active' ><img src={lt22}/> 文章管理</Link>
+          <Link to="/article/preview/1" className="nav-item" activeClassName='nav-active' ><img src={lt22}/> 文章管理</Link>
           <Item ><Link to="/column/preview/1" className="nav-item" activeClassName='nav-active' ><img src={lt22}/> 分类管理</Link></Item>
           <Item className="hide"><Link to="/buyItemst/preview"><img src={lt22}/> 订阅信息</Link></Item>
           <Item className="hide"><Link to="articlereview/preview"><img src={lt22}/> 文章审核</Link></Item>

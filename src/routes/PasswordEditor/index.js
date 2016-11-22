@@ -1,7 +1,7 @@
 import { injectReducer } from '../../store/reducers'
 
 export default (store) => ({
-  path : '/article/detail/:articleId',
+  path : '/password',
   onEnter:requireAuth,
   /*  Async getComponent is only invoked when route matches   */
   getComponent (nextState, cb) {
@@ -10,17 +10,17 @@ export default (store) => ({
     require.ensure([], (require) => {
       /*  Webpack - use require callback to define
           dependencies for bundling   */
-      const ArticleDetail = require('./containers/ArticleDetailContainer').default
-      const reducer = require('./modules/articleDetail').default
+      const PasswordEditor = require('./containers/PasswordEditorContainer').default
+      const reducer = require('./modules/passwordEditor').default
 
       /*  Add the reducer to the store on key 'counter'  */
-      injectReducer(store, { key: 'articleDetail', reducer })
+      injectReducer(store, { key: 'passwordEditor', reducer })
 
       /*  Return getComponent   */
-      cb(null, ArticleDetail)
+      cb(null, PasswordEditor)
 
     /* Webpack named bundle   */
-    }, 'articleDetail')
+    }, 'passwordEditor')
   }
 })
 

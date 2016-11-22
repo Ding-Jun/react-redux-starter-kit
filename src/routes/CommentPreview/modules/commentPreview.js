@@ -71,7 +71,7 @@ export function fetchCommentList(targetPage) {
   return (dispatch, getState) => {
     dispatch(requestCommentList())
     return (
-      axios.get(`/nczl-web/rs/comment/list?curPage=${targetPage}&pageSize=20&status=0`)
+      axios.get(`/nczl-web/rs/comment/list?curPage=${targetPage}&pageSize=3&status=0`)
         .then(function (res) {
           console.log(res);
           if(res.data.code== 1){

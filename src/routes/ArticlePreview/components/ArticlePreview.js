@@ -15,24 +15,36 @@ class ArticlePreview extends React.Component {
   static propTypes = {
     fetching          : React.PropTypes.bool.isRequired,
     page              : React.PropTypes.object.isRequired,
-    query             : React.PropTypes.object.isRequired,
     searchValue       : React.PropTypes.string.isRequired,
     fetchArticleList  : React.PropTypes.func.isRequired,
     clearArticleList  : React.PropTypes.func.isRequired,
     setSearchValue    : React.PropTypes.func.isRequired,
     deleteArticle    : React.PropTypes.func.isRequired
   }
-  componentWillMount() {
-    //this.queryArticleList(1);
-    this.props.fetchArticleList(1)
+  componentDidMount() {
+    const {location:{query},params,fetchArticleList,setSearchValue} = this.props;
+    setSearchValue(query.title||'');
+    fetchArticleList(params.targetPage||1,query)
   }
   componentWillUnmount() {
     this.props.clearArticleList();
   }
+  componentWillReceiveProps(nextProps){
+    const { location,fetchArticleList,setSearchValue} = this.props;
+    if(location!== nextProps.location){
+      setSearchValue(nextProps.location.query.title||'');
+      fetchArticleList(nextProps.params.targetPage,nextProps.location.query);
+    }
+  }
   handleQueryArticle(e) {
     e.preventDefault();
+    const {location:{query}, router } = this.props;
     var targetPage = e.currentTarget.getAttribute("data-page");
-    this.props.fetchArticleList(targetPage);
+    const location = {
+      pathname:`/article/preview/${targetPage}`,
+      query:query
+    }
+    router.push(location)
   }
 
   handleSearchValueChange(e){
@@ -43,17 +55,23 @@ class ArticlePreview extends React.Component {
 
   handleSearch(e){
     e.preventDefault();
-    var {query,searchValue} = this.props;
-    query.title=searchValue;
-    this.props.fetchArticleList(1,query);
+    const {location:{query,pathname}, router,searchValue } = this.props;
+    const location = {
+      pathname:'/article/preview/1',
+      query:{...query,title:searchValue}
+    }
+    router.push(location)
   }
 
   handleColumnClick(e){
     e.preventDefault();
+    const {location:{query,pathname}, router } = this.props;
     const columnId=  e.target.getAttribute("data-column-id");
-    var query=this.props.query;
-    query.columnId=columnId;
-    this.props.fetchArticleList(1,query);
+    const location = {
+      pathname:'/article/preview/1',
+      query:{...query,columnId:columnId}
+    }
+    router.push(location)
   }
 
   handleDeleteArticle(e){
@@ -67,6 +85,7 @@ class ArticlePreview extends React.Component {
   }
 
   render() {
+    const title= '文章管理';
     const {page,fetching,searchValue} = this.props;
     const columns = [{title: '标题', dataIndex: 'title', width: "39%", key: 'title'},
       {title: '所属分类', dataIndex: 'columnName', width: "8%", key: 'columnName', isOptd: true},
@@ -96,21 +115,21 @@ class ArticlePreview extends React.Component {
         sort: article.sort,
         isStick: article.stick==1?'是':null,
         status: status,
-        comments: article.comments?<Link to={`/article/${article.id}/1`}>{article.comments}</Link>:article.comments,
+        comments: article.comments?<Link to={{pathname:'/article/comment/1',query:{objectId:article.id}}}>{article.comments}</Link>:article.comments,
         operation: (
           <span>
-            <Link to={`/article/detail/${article.id}/readOnly`}>详细</Link>
-            <Link to={`/article/detail/${article.id}/edit`}>编辑</Link>
+            <Link to={{ pathname: `/article/detail/${article.id}`, query: { type: 'read' } }} >详细</Link>
+            <Link to={{ pathname: `/article/detail/${article.id}`, query: { type: 'edit' } }}>编辑</Link>
             <a href="#" data-id={article.id} onClick={this.handleDeleteArticle.bind(this)}>删除</a>
           </span>
         )
       }
     });
     return (
-      <Card title={<span>文章管理223343</span>}>
-        <Helmet title="文章管理"/>
+      <Card title={title}>
+        <Helmet title={title}/>
         <div className="total">
-          <span className="xe"><Link to="/article/detail/new/edit"><Button prefixCls="add-btn" ><img
+          <span className="xe"><Link to={{ pathname: `/article/detail/new`, query: { type: 'edit' } }}><Button prefixCls="add-btn" ><img
             src={iconAdd}/> 新增</Button></Link></span>请输入关键字搜索：
           <input className="input1" type="text" value={searchValue} onChange={this.handleSearchValueChange.bind(this)} /> <Button onClick={this.handleSearch.bind(this)}>搜索</Button>
         </div>

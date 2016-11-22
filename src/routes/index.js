@@ -7,7 +7,8 @@ import ArticlePreviewRoute from './ArticlePreview'
 import ArticleDetailRoute from './ArticleDetail'
 import ColumnPreviewRoute from './ColumnPreview'
 import CommentPreviewRoute from './CommentPreview'
-
+import ArticleCommentRoute from './ArticleComment'
+import PasswordEditorRoute from './PasswordEditor'
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
@@ -21,7 +22,9 @@ export const createRoutes = (store) => ({
     ArticlePreviewRoute(store),
     ColumnPreviewRoute(store),
     CommentPreviewRoute(store),
-    ArticleDetailRoute(store)
+    ArticleDetailRoute(store),
+    ArticleCommentRoute(store),
+    PasswordEditorRoute(store)
   ]
 })
 

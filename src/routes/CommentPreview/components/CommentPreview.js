@@ -17,17 +17,26 @@ const FAIL_STATUS = 2;
 class CommentPreview extends React.Component {
 
   componentDidMount() {
-    this.props.fetchCommentList(1);
+    const {params,fetchCommentList} = this.props;
+    fetchCommentList(params.targetPage||1);
   }
-
+  componentWillUnmount() {
+    this.props.clearCommentList();
+  }
+  componentWillReceiveProps(nextProps){
+    const { location,fetchCommentList } = this.props;
+    if(location!== nextProps.location){
+      fetchCommentList(nextProps.params.targetPage);
+    }
+  }
   handleQueryComment(event) {
     event.preventDefault();
     var targetPage = event.currentTarget.getAttribute("data-page");
-    console.log("targetPage",targetPage)
-    this.setState({
-      loading: true
-    })
-    this.queryCommentList(targetPage);
+    const { router } = this.props;
+    const location = {
+      pathname:`/comment/preview/${targetPage}`
+    }
+    router.push(location)
   }
 
   handleChecked(event) {

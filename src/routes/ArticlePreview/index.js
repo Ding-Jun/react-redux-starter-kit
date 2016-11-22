@@ -1,7 +1,7 @@
 import { injectReducer } from '../../store/reducers'
 
 export default (store) => ({
-  path : '/article/preview/:articleId/:targetPage',
+  path : '/article/preview/:targetPage',
   onEnter:requireAuth,
   /*  Async getComponent is only invoked when route matches   */
   getComponent (nextState, cb) {

@@ -8,7 +8,7 @@ import AppContainer from './containers/AppContainer'
 import layout from '../config/layout'
 import 'es6-promise/auto';
 import axios from 'axios';
-
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 // ========================================================
 // Browser History Setup
 // ========================================================

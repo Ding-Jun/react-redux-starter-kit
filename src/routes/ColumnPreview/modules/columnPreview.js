@@ -73,12 +73,12 @@ export function setEditOption(option) {
  NOTE: This is solely for demonstration purposes. In a real application,
  you'd probably want to dispatch an action of COUNTER_DOUBLE and let the
  reducer take care of this logic.  */
-export function fetchColumnList(targetPage) {
+export function fetchColumnList(targetPage,callback) {
   return (dispatch, getState) => {
     dispatch(requestColumnList())
     dispatch(closeModal())
     return (
-      axios.get(`/nczl-web/rs/column/list?curPage=${targetPage}&pageSize=20`)
+      axios.get(`/nczl-web/rs/column/list?curPage=${targetPage}&pageSize=3`)
         .then(function (res) {
           console.log(res);
           if(res.data.code== 1){

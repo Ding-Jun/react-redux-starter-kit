@@ -2,7 +2,6 @@
  * Created by admin on 2016/10/13.
  */
 import React from 'react'
-import $ from 'jquery'
 import {Link} from "react-router"
 import Helmet from 'react-helmet'
 import Card from 'components/Card'
@@ -15,55 +14,31 @@ import {COLUMN_EDIT_TYPE,COLUMN_ADD_TYPE} from '../modules/columnPreview'
 const iconAdd = require('static/images/icon_add.gif');
 const title = '分类管理';
 class ColumnPreview extends React.Component {
-  /*constructor(props) {
-    super(props);
-    // Operations usually carried out in componentWillMount go here
-    this.state = {
-      page: {
-        rowData: []
-      },
-      loading: true,
-      modal: {
-        visible: false
-      }
-    }
-  }*/
-
   componentWillMount() {
     console.log('degbu',this.props.params.targetPage)
     this.props.fetchColumnList(this.props.params.targetPage);
   }
+
   componentWillUnmount() {
     this.props.clearColumnList();
   }
-  handleQueryColumn(event) {
 
-    event.preventDefault();
-    var targetPage = event.currentTarget.getAttribute("data-page");
-    this.setState({
-      loading: true
-    })
-    this.queryColumnList(targetPage);
+  componentWillReceiveProps(nextProps){
+    const { location,fetchColumnList} = this.props;
+    if(location!== nextProps.location){
+      fetchColumnList(nextProps.params.targetPage);
+    }
   }
 
-  queryColumnList(targetPage, nameFilter = {}) {
-    console.log("targetPagdde",targetPage)
-    var url='/nczl-web/rs/column/list?curPage=' + targetPage + '&pageSize=' + 20;
-    console.log("uuuusrl",url)
-    $.ajax({
-      type: 'GET',
-      url: url,
-      dataType: 'json',
-      success: function (rm) {
-        console.log('queryColumnList debug', rm.result);
-        if (rm.code == 1) {
-          this.setState({
-            page: rm.result,
-            loading: false
-          })
-        }
-      }.bind(this)
-    })
+  handleQueryColumn(e) {
+    e.preventDefault();
+    var targetPage = e.currentTarget.getAttribute("data-page");
+    const {location:{query}, router } = this.props;
+    const location = {
+      pathname:`/column/preview/${targetPage}`,
+      query:query
+    }
+    router.push(location)
   }
 
   handleEdit(e) {
@@ -82,8 +57,8 @@ class ColumnPreview extends React.Component {
     }
     setEditOption(editOption)
     openModal(modalOption);
-
   }
+
   handleDeleteColumn(e){
     e.preventDefault();
     var targetId = e.currentTarget.getAttribute("data-id");
@@ -93,6 +68,7 @@ class ColumnPreview extends React.Component {
       this.props.deleteColumn(targetId)
     }
   }
+
   handleInputChange(e){
     e.preventDefault();
     const {setEditOption, editOption}=this.props;
@@ -101,26 +77,10 @@ class ColumnPreview extends React.Component {
       value:e.target.value
     })
   }
+
   handleEditConfirm() {
     this.props.editColumn();
   }
-/*
-  openModal(type, columnId,columnName) {
-    switch (type) {
-      case 'add':
-        this.setState({modal: {visible: true,type:'add', title: '新增分类',id:null,inputValue:""}});
-        break;
-      case 'edit':
-        this.setState({modal: {visible: true,type:'edit', title: '编辑分类',id:columnId,inputValue:columnName}});
-        break;
-      default:console.warn('no such type')
-    }
-
-  }
-
-  closeModal() {
-    this.setState({modal: {visible: false}});
-  }*/
 
   render() {
     const {fetching,page, closeModal, modalOption,editOption} = this.props;
@@ -149,7 +109,7 @@ class ColumnPreview extends React.Component {
       return {
         id: column.id,
         columnName: name,
-        articleCnt: count ? <Link to={`/article/preview/${column.id}/1`}>{count}</Link> : count,
+        articleCnt: count ? <Link to={{pathname:`/article/preview/1`,query:{columnId:column.id}}}>{count}</Link> : count,
         operation: (
           <span>
             <a href="#" data-type={COLUMN_EDIT_TYPE} data-name={name} data-id={column.id}
@@ -159,6 +119,7 @@ class ColumnPreview extends React.Component {
         )
       }
     });
+
     return (
       <Card title={<span>{title}</span>}>
         <Helmet title={`${title} 第${page.curPage}页` }/>
