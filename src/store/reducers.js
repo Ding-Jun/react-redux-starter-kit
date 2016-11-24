@@ -10,6 +10,7 @@ const initialReducers = {
   articleComment:(state = require('../routes/ArticleComment/modules/articleComment').initialState) => state,
   articleDetail:(state = require('../routes/ArticleDetail/modules/articleDetail').initialState) => state,
   columnPreview:(state = require('../routes/ColumnPreview/modules/columnPreview').initialState) => state,
+  commentPreview:(state = require('../routes/CommentPreview/modules/commentPreview').initialState) => state,
   counter: (state = 0) => state,
   zen: (state = require('../routes/Zen/modules/zen').initialState) => state
 }

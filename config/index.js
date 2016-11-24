@@ -20,7 +20,9 @@ const config = {
   dir_public : 'dist/public',
   dir_server : 'server',
   dir_test   : 'tests',
-
+  app_root   : '/nczl-web/admin',  //app路径
+  api_root   : '/nczl-web/rs',     //api路径
+  app_static : '/nczl-web',  //静态资源路径
   // ----------------------------------
   // Entry points
   // ----------------------------------
@@ -41,7 +43,7 @@ const config = {
   server_host : ip.address(), // use string 'localhost' to prevent exposure on local network
   server_port : process.env.PORT || 3000,
   universal     : {
-    enabled     : false,
+    enabled     : true,
     output      : 'server.js',
     client_info : 'client_info.json'
   },
@@ -50,7 +52,7 @@ const config = {
   // ----------------------------------
   proxy       : {
     enabled     : true,
-    matchUrl    : /^\/nczl-web\/.*/,
+    matchUrl    : /^\/nczl-web\/rs\/.*/,
     options     : {
       target    : 'http://zl.fan66.cn',// 'http://zl.fan66.cn', // target host
       changeOrigin: true,               // needed for virtual hosted sites
@@ -69,7 +71,7 @@ const config = {
   compiler_hash_type       : 'hash',
   compiler_fail_on_warning : false,
   compiler_quiet           : false,
-  compiler_public_path     : '/',
+  compiler_public_path     : '/nczl-web',
   compiler_stats           : {
     chunks : false,
     chunkModules : false,

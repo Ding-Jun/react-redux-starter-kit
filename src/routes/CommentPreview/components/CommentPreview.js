@@ -10,7 +10,7 @@ import Table from 'components/Table'
 import Button from 'components/Button'
 import Pagination from 'components/Pagination'
 import 'components/util/date'
-
+import {APP_ROOT} from 'constant'
 const PASS_STATUS = 1;
 const FAIL_STATUS = 2;
 
@@ -34,7 +34,7 @@ class CommentPreview extends React.Component {
     var targetPage = event.currentTarget.getAttribute("data-page");
     const { router } = this.props;
     const location = {
-      pathname:`/comment/preview/${targetPage}`
+      pathname:`${APP_ROOT}/comment/preview/${targetPage}`
     }
     router.push(location)
   }

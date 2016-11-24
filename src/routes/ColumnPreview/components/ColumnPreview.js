@@ -11,6 +11,7 @@ import Pagination from 'components/Pagination'
 import Modal from 'components/Modal'
 import Input from 'components/Input'
 import {COLUMN_EDIT_TYPE,COLUMN_ADD_TYPE} from '../modules/columnPreview'
+import {APP_ROOT} from 'constant'
 const iconAdd = require('static/images/icon_add.gif');
 const title = '分类管理';
 class ColumnPreview extends React.Component {
@@ -35,7 +36,7 @@ class ColumnPreview extends React.Component {
     var targetPage = e.currentTarget.getAttribute("data-page");
     const {location:{query}, router } = this.props;
     const location = {
-      pathname:`/column/preview/${targetPage}`,
+      pathname:`${APP_ROOT}/column/preview/${targetPage}`,
       query:query
     }
     router.push(location)
@@ -109,7 +110,7 @@ class ColumnPreview extends React.Component {
       return {
         id: column.id,
         columnName: name,
-        articleCnt: count ? <Link to={{pathname:`/article/preview/1`,query:{columnId:column.id}}}>{count}</Link> : count,
+        articleCnt: count ? <Link to={{pathname:`${APP_ROOT}/article/preview/1`,query:{columnId:column.id}}}>{count}</Link> : count,
         operation: (
           <span>
             <a href="#" data-type={COLUMN_EDIT_TYPE} data-name={name} data-id={column.id}

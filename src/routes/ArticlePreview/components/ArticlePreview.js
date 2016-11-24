@@ -8,7 +8,7 @@ import Table from 'components/Table'
 import Button from 'components/Button'
 import Pagination from 'components/Pagination'
 import Helmet from 'react-helmet'
-
+import { APP_ROOT } from 'constant'
 import 'components/util/date'
 const iconAdd = require('static/images/icon_add.gif');
 class ArticlePreview extends React.Component {
@@ -22,6 +22,7 @@ class ArticlePreview extends React.Component {
     deleteArticle    : React.PropTypes.func.isRequired
   }
   componentDidMount() {
+    if(this.props.page && this.props.page.curPage ) return;
     const {location:{query},params,fetchArticleList,setSearchValue} = this.props;
     setSearchValue(query.title||'');
     fetchArticleList(params.targetPage||1,query)
@@ -41,7 +42,7 @@ class ArticlePreview extends React.Component {
     const {location:{query}, router } = this.props;
     var targetPage = e.currentTarget.getAttribute("data-page");
     const location = {
-      pathname:`/article/preview/${targetPage}`,
+      pathname:`${APP_ROOT}/article/preview/${targetPage}`,
       query:query
     }
     router.push(location)
@@ -57,7 +58,7 @@ class ArticlePreview extends React.Component {
     e.preventDefault();
     const {location:{query,pathname}, router,searchValue } = this.props;
     const location = {
-      pathname:'/article/preview/1',
+      pathname:`${APP_ROOT}/article/preview/1`,
       query:{...query,title:searchValue}
     }
     router.push(location)
@@ -68,7 +69,7 @@ class ArticlePreview extends React.Component {
     const {location:{query,pathname}, router } = this.props;
     const columnId=  e.target.getAttribute("data-column-id");
     const location = {
-      pathname:'/article/preview/1',
+      pathname:`${APP_ROOT}/article/preview/1`,
       query:{...query,columnId:columnId}
     }
     router.push(location)
@@ -115,11 +116,11 @@ class ArticlePreview extends React.Component {
         sort: article.sort,
         isStick: article.stick==1?'是':null,
         status: status,
-        comments: article.comments?<Link to={{pathname:'/article/comment/1',query:{objectId:article.id}}}>{article.comments}</Link>:article.comments,
+        comments: article.comments?<Link to={{pathname:`${APP_ROOT}/article/comment/1`,query:{objectId:article.id}}}>{article.comments}</Link>:article.comments,
         operation: (
           <span>
-            <Link to={{ pathname: `/article/detail/${article.id}`, query: { type: 'read' } }} >详细</Link>
-            <Link to={{ pathname: `/article/detail/${article.id}`, query: { type: 'edit' } }}>编辑</Link>
+            <Link to={{ pathname: `${APP_ROOT}/article/detail/${article.id}`, query: { type: 'read' } }} >详细</Link>
+            <Link to={{ pathname: `${APP_ROOT}/article/detail/${article.id}`, query: { type: 'edit' } }}>编辑</Link>
             <a href="#" data-id={article.id} onClick={this.handleDeleteArticle.bind(this)}>删除</a>
           </span>
         )
@@ -129,7 +130,7 @@ class ArticlePreview extends React.Component {
       <Card title={title}>
         <Helmet title={title}/>
         <div className="total">
-          <span className="xe"><Link to={{ pathname: `/article/detail/new`, query: { type: 'edit' } }}><Button prefixCls="add-btn" ><img
+          <span className="xe"><Link to={{ pathname: `${APP_ROOT}/article/detail/new`, query: { type: 'edit' } }}><Button prefixCls="add-btn" ><img
             src={iconAdd}/> 新增</Button></Link></span>请输入关键字搜索：
           <input className="input1" type="text" value={searchValue} onChange={this.handleSearchValueChange.bind(this)} /> <Button onClick={this.handleSearch.bind(this)}>搜索</Button>
         </div>

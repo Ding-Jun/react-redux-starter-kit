@@ -1,7 +1,8 @@
 import { injectReducer } from '../../store/reducers'
+import { APP_ROOT } from 'constant'
 
 export default (store) => ({
-  path : '/column/preview/:targetPage',
+  path : `${APP_ROOT}/column/preview/:targetPage`,
   onEnter:requireAuth,
   /*  Async getComponent is only invoked when route matches   */
   getComponent (nextState, cb) {

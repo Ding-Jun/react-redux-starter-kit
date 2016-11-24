@@ -1,5 +1,6 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout/CoreLayout'
+import {APP_ROOT} from 'constant'
 import Home from './Home'
 import CounterRoute from './Counter'
 import ZenRoute from './Zen'
@@ -9,11 +10,12 @@ import ColumnPreviewRoute from './ColumnPreview'
 import CommentPreviewRoute from './CommentPreview'
 import ArticleCommentRoute from './ArticleComment'
 import PasswordEditorRoute from './PasswordEditor'
+
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
 export const createRoutes = (store) => ({
-  path        : '/',
+  path        : APP_ROOT,
   component   : CoreLayout,
   indexRoute  : Home,
   childRoutes : [

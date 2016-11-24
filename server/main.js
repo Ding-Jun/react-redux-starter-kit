@@ -75,7 +75,7 @@ module.exports = function* (){
     // of development since this directory will be copied into ~/dist
     // when the application is compiled.
     debug(`express use static folder:${paths.src('static')}`)
-    app.use(express.static(paths.src('static')))
+    app.use(config.app_static, express.static(paths.src('static')))
   } else {
     if (config.universal.enabled) {
       // Get assets from client_info.json
@@ -102,14 +102,19 @@ module.exports = function* (){
     // the web server and not the app server, but this helps to demo the
     // server in production.
     debug(`express use static folder:${paths.public()}`)
-    app.use(express.static(paths.public()))
+    app.use(config.app_static, express.static(paths.public()))
 
 
   }
   //服务器端编译
   if (config.universal && config.universal.enabled) {
     let um = yield universalMiddleware()
-    app.use(um.default(() => clientInfo))
+    console.log("config.app_root",config.app_root)
+    app.use(`${config.app_root}/*`, um.default(() => clientInfo))
+    app.get('/user/:id', function(req, res) {
+
+      res.send('user ' + req.params.id+" "+req.url);
+    });
   }
 
   return Promise.resolve(app)

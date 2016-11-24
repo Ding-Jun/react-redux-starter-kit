@@ -12,7 +12,7 @@ import Modal from 'components/Modal'
 import Cropper from 'components/Cropper'
 import 'components/util/date'
 import getObjectUrl from 'components/util/getObjectUrl'
-
+import {APP_ROOT} from 'constant'
 const ARTICLE_READ_TYPE = 'read'
 const ARTICLE_EDIT_TYPE = 'edit'
 const ARTICLE_ADD_TYPE = 'add'
@@ -176,7 +176,7 @@ class ArticleDetail extends React.Component{
     e.preventDefault();
     const {router:{push}}=this.props;
     push({
-      pathname: '/article/preview/1',
+      pathname: `${APP_ROOT}/article/preview/1`,
     })
   }
   render(){

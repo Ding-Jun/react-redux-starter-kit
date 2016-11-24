@@ -10,7 +10,7 @@ import Table from 'components/Table'
 import Button from 'components/Button'
 import Pagination from 'components/Pagination'
 import 'components/util/date'
-
+import {APP_ROOT} from '../../../constant'
 
 class ArticleComment extends React.Component {
 
@@ -32,7 +32,7 @@ class ArticleComment extends React.Component {
     var targetPage = event.currentTarget.getAttribute("data-page");
     const { router, location:{query} } = this.props;
     const location = {
-      pathname:`/article/comment/${targetPage}`,
+      pathname:`${APP_ROOT}/article/comment/${targetPage}`,
       query
     }
     router.push(location)

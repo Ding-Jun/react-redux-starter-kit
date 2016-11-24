@@ -11,7 +11,7 @@ module.exports = Object.freeze({
   link: [
     {rel: 'shortcut icon', href: '/favicon.ico'},
     //{rel: 'stylesheet', href: 'bootstrap.min.css'},
-    {rel: 'stylesheet', href: '/app.css'}
+    {rel: 'stylesheet', href: '/nczl-web/styles/app.css'}
   ],
   script: [],
   style: []
